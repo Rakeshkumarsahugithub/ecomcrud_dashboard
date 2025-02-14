@@ -32,7 +32,7 @@ const UpdateProduct = () => {
     const fetchProductDetails = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/products/${id}`, { withCredentials: true });
+            const response = await axios.get(`https://ecomcrud-dashboard.onrender.com/products/${id}`, { withCredentials: true });
             if (response.data) {
                 const { name, price, category, company } = response.data;
                 setName(name);
@@ -74,7 +74,7 @@ const UpdateProduct = () => {
         setLoading(true);
         try {
             const response = await axios.put(
-                `http://localhost:5000/products/${id}`,
+                `https://ecomcrud-dashboard.onrender.com/products/${id}`,
                 { name, price: parseFloat(price), category, company },
                 { withCredentials: true }
             );
