@@ -12,7 +12,7 @@ const Login = ({ setAuth }) => { // Functional component that accepts `setAuth` 
         try {
             // Send a POST request to the backend login endpoint with user credentials.
             const result = await axios.post(
-                'http://localhost:5000/auth/login', // API endpoint for login.
+                'https://ecomcrud-dashboard.onrender.com/auth/login', // API endpoint for login.
                 { email, password }, // Request payload containing user email and password.
                 {
                     headers: {
