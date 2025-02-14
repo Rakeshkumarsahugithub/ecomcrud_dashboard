@@ -24,7 +24,7 @@
                 useEffect(() => {
                     const checkAuth = async () => {
                         try {
-                            const response = await axios.get("http://localhost:5000/auth/check", { withCredentials: true });
+                            const response = await axios.get("https://ecomcrud-dashboard.onrender.com/auth/check", { withCredentials: true });
                             setIsAuthenticated(response.data.isAuthenticated);
                         } catch (error) {
                             setIsAuthenticated(false);
@@ -37,7 +37,7 @@
             
                 const handleLogout = async () => {
                     try {
-                        await axios.post("http://localhost:5000/auth/logout", {}, { withCredentials: true });
+                        await axios.post("https://ecomcrud-dashboard.onrender.com/auth/logout", {}, { withCredentials: true });
                         setIsAuthenticated(false);
                     } catch (error) {
                         console.error("Error logging out:", error);
