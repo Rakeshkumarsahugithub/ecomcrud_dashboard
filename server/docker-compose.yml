@@ -19,18 +19,13 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGODB_URI=mongodb+srv://sahurks1234:BbAEQ8KzKpXrVGLO@rakesh.1s1b3.mongodb.net/Auth
-      - KEY=your_jwt_secret_key_here
-      - EMAIL=sahurks1234@gmail.com
-      - EMAIL_PASSWORD=ndryoobhqaiskvtt
-      - PORT=5000
-      #   environment:
+    
       # # Use .env file for environment variables
-      # - MONGODB_URI=${MONGODB_URI}
-      # - KEY=${KEY}
-      # - EMAIL=${EMAIL}
-      # - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-      # - PORT=${PORT}
+       - MONGODB_URI=${MONGODB_URI}
+       - KEY=${KEY}
+       - EMAIL=${EMAIL}
+       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+       - PORT=${PORT}
     networks:
       - mern-network
     volumes:
