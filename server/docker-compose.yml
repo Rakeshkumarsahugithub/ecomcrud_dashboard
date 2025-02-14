@@ -19,12 +19,9 @@ services:
     ports:
       - "5000:5000"
     environment:
-    
-      # # Use .env file for environment variables
+          # Use .env file for environment variables
        - MONGODB_URI=${MONGODB_URI}
        - KEY=${KEY}
-       - EMAIL=${EMAIL}
-       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
        - PORT=${PORT}
     networks:
       - mern-network
