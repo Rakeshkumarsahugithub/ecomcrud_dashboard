@@ -16,10 +16,10 @@ const Navbar = () => {
     // Function to check authentication and fetch user data
     const checkAuthentication = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/auth/check", { withCredentials: true });
+            const response = await axios.get("https://ecomcrud-dashboard.onrender.com/auth/check", { withCredentials: true });
             if (response.data.isAuthenticated) {
                 // Fetch the user data if authenticated
-                const userResponse = await axios.get("http://localhost:5000/user", { withCredentials: true });
+                const userResponse = await axios.get("https://ecomcrud-dashboard.onrender.com/user", { withCredentials: true });
                 setIsLoggedIn(true);
                 setUsername(userResponse.data.name);  // Set the username
             } else {
@@ -39,7 +39,7 @@ const Navbar = () => {
     // Handle logout
     const logout = async () => {
         try {
-            await axios.post("http://localhost:5000/auth/logout", {}, { withCredentials: true });
+            await axios.post("https://ecomcrud-dashboard.onrender.com/auth/logout", {}, { withCredentials: true });
             setIsLoggedIn(false);
             setDropdownVisible(false);
             navigate("/login");  // Redirect to login page
