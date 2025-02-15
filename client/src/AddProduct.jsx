@@ -15,7 +15,7 @@ const AddProduct = () => {
     const cookies = document.cookie.split("; ");
     for (const cookie of cookies) {
       const [cookieName, cookieValue] = cookie.split("=");
-      if (cookieName === name) {
+      if (cookieName.trim() === name) { // Trim whitespace
         return decodeURIComponent(cookieValue);
       }
     }
@@ -35,7 +35,7 @@ const AddProduct = () => {
     setLoading(true);
 
     try {
-      const token = getCookie("token"); // Get token from cookies
+      const token = getCookie("token");
       console.log("Token retrieved:", token); // Debugging line
 
       if (!token) {
