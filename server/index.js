@@ -21,7 +21,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173", // Local development URL
+      "https://ecomcrud-dashboard-1.onrender.com", // Production frontend URL
+    ],
     credentials: true,
   })
 );
