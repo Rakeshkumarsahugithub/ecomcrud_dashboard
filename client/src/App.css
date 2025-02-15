@@ -1,195 +1,174 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Navbar Styles */
 .navul {
-  position: relative;
-  top: 0;
   background-color: rgb(138, 198, 235);
   padding: 20px;
   margin: 0;
   width: 100%;
-
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
 }
 
 .navul li {
-  display: inline;
-  padding: 15px;
+  display: inline-block;
+  padding: 10px;
 }
 
 .navul li a {
-  margin-right: 150px;
+  margin-right: 20px;
   color: rgb(118, 16, 16);
-  font-size: larger;
+  font-size: 1.2rem;
   font-weight: 600;
   text-decoration: none;
   padding: 5px;
 }
 
-.right{
+.navul li a.home-link {
+  color: darkgreen;
+  font-weight: bold;
+  background-color: lightyellow;
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.navul li a.home-link:hover {
+  background-color: goldenrod;
+  color: white;
+}
+
+/* Right-aligned content */
+.right {
   text-align: right;
-} 
-li{
+}
+
+li {
   color: #ebdede;
 }
-/* .footer{
-  position: static;
-  bottom: 0;
-  height: 20px;
-  text-align: center;
-  width: 100%;
-  background-color: rgb(138, 198, 235);
-} */
 
-/* Footer.css */
-/* .footer {
-  display: inline-block;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  background-color: rgb(138, 198, 235);
-  padding: 10px 0;
-  color: #333;
-  font-size: 14px;
-  border-top: 1px solid #ddd;
-} */
+/* Footer Styles */
 .footer {
-  position: fixed;         /* Fix the footer to the bottom of the screen */
-  bottom: 0;               /* Align it to the bottom */
-  left: 0;                 /* Align it to the left */
-  width: 100%;             /* Ensure it takes the full width */
-  text-align: center;      /* Center the text inside */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
   background-color: rgb(138, 198, 235);
   padding: 10px 0;
   color: #333;
   font-size: 14px;
   border-top: 1px solid #ddd;
-  z-index: 10;             /* Ensures it stays on top of other content */
+  z-index: 10;
 }
 
-.regi{
-padding: 90px;
-margin-left: 100px;
-
-  
-}
-#sign{
-  cursor: pointer;
-}
-#sign:hover{
-  background-color: azure;
-}
-.inputBox{
-  
+/* Form and Input Styles */
+.inputBox, .inputBox2, .inputBox3, .inputBox4 {
   margin-left: 76px;
   margin-top: 20px;
   width: 400px;
   border: 1px solid black;
 }
-.inputBox2{
-  
-  margin-left: 76px;
-  margin-top: 20px;
-  width: 400px;
-  border: 1px solid black;
-}
-.inputBox3{
-  
-  margin-left: 50px;
-  margin-top: 20px;
-  width: 400px;
-  border: 1px solid black;
-}
-.inputBox4{
-  
-  margin-left: 30px;
-  margin-top: 20px;
-  width: 400px;
-  border: 1px solid black;
-}
-#sign{
-  padding: 5px;
-  width: 500px;
-  margin-left: 11%;
 
-}
-
-.inputBx{
+.inputBx {
   padding: 7px;
   display: block;
   border: 1px solid rgb(212, 125, 43);
   width: 400px;
   margin: 20px;
 }
-.prdbtn{
-  margin: 20px;
-  width: 400px;
-  padding: 10px;
-  background-color: darkgoldenrod;
-  border: solid 1px;
+
+#sign {
   cursor: pointer;
-}
-.addproduct{
-margin-left: 30%;
-}
-#popup{
-display: block;
-margin-top: -20px;
-margin-left: 20px;
-color: red;
+  padding: 5px;
+  width: 500px;
+  margin-left: 11%;
 }
 
-.productli {
-  color:black;
-  text-align: center;
-  margin-top:50px ;
- 
+#sign:hover {
+  background-color: azure;
 }
-.productli li {
-  color:rgb(0, 0, 0);
+
+/* Add Product Form */
+.addproduct {
+  margin-left: 30%;
+}
+
+#popup {
+  display: block;
+  margin-top: -20px;
+  margin-left: 20px;
+  color: red;
+}
+
+/* Product List Styles */
+.productli {
+  color: black;
   text-align: center;
-  display:inline-flex;
+  margin-top: 50px;
+}
+
+.productli ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.productli li {
+  color: rgb(0, 0, 0);
+  text-align: center;
+  display: inline-flex;
   width: 150px;
   border: 1px solid rgb(0, 170, 255);
   padding: 10px;
- 
+  margin: 10px;
 }
+
 .productli li button {
-   padding: 0;
-   
-      font-size: 10px;
-      background-color: rgb(158, 212, 189);
-      color: rgb(249, 24, 58);
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 800;
-      border: 1px solid rgb(16, 116, 166);
-      
-     
-}
-
-
-.productli li button a  {
-color: rgb(35, 72, 6); /* Adjust width as needed */
-  text-decoration: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: rgb(158, 212, 189);
+  color: rgb(249, 24, 58);
   border-radius: 5px;
-
- 
+  cursor: pointer;
+  font-weight: 800;
+  border: 1px solid rgb(16, 116, 166);
+  transition: background-color 0.3s ease;
 }
 
-.productli ul{
-  margin: 0;
-  
+.productli li button a {
+  color: rgb(35, 72, 6);
+  text-decoration: none;
 }
-.searchh{
+
+.productli li button:hover {
+  background-color: lightcoral;
+}
+
+/* Search Box */
+.searchh {
   padding: 5px;
-  font-size: large;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-top: 10px;
   margin-bottom: 20px;
   width: 400px;
   border: 2px solid rgb(56, 174, 221);
   color: rgb(8, 21, 139);
-  
 }
-#serbtn{
-  
+
+#serbtn {
   padding: 9px;
   font-size: 15px;
   background-color: skyblue;
@@ -198,61 +177,69 @@ color: rgb(35, 72, 6); /* Adjust width as needed */
   cursor: pointer;
   font-weight: 700;
   border: 1.5px solid rgb(195, 247, 121);
-    
 }
+
+/* Add Product Button */
+.prdbtn {
+  margin: 20px;
+  width: 400px;
+  padding: 10px;
+  background-color: darkgoldenrod;
+  border: solid 1px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.prdbtn:hover {
+  background-color: goldenrod;
+}
+
+/* Error Message */
+#error-message {
+  color: red;
+  font-size: 14px;
+  padding: 5px;
+}
+
+/* Login Button */
 .Logbtn {
   background-color: red;
   color: white;
   margin-left: 300px;
- 
-  padding: 10px 20px; /* Adds space around the text */
-  border: none; /* Removes the default border */
-  border-radius: 15px; /* Rounds the corners */
-  font-size: 16px; /* Sets the font size */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .Logbtn:hover {
-  background-color: darkred; /* Changes the background color when hovered */
+  background-color: darkred;
 }
 
 .Logbtn:focus {
-  outline: none; /* Removes the outline when the button is focused */
+  outline: none;
 }
 
 .Logbtn:active {
-  background-color: crimson; /* Changes the background color when clicked */
+  background-color: crimson;
 }
 
-
-
-.navul li a {
-  margin-right: 150px;
-  color: rgb(118, 16, 16);
-  font-size: larger;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 5px;
+/* Other Utilities */
+.regi {
+  padding: 90px;
+  margin-left: 100px;
 }
 
-.navul li a.home-link {
-  color: darkgreen; /* Unique color for the Home link */
-  font-size: larger; /* Increase the font size slightly */
-  font-weight: bold; /* Make the Home link bold */
-  background-color: lightyellow; /* Add a background color */
-  padding: 8px 12px; /* Add padding for better visibility */
-  border-radius: 10px; /* Round the edges */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+#serbtn {
+  padding: 9px;
+  font-size: 15px;
+  background-color: skyblue;
+  color: rgb(23, 6, 179);
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  border: 1.5px solid rgb(195, 247, 121);
 }
-
-.navul li a.home-link:hover {
-  background-color: goldenrod; /* Change the background color on hover */
-  color: white; /* Change text color on hover */
-}
-
-
-
-
-
 
