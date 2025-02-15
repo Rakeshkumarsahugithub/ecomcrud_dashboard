@@ -77,8 +77,6 @@ app.post("/auth/signup", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-// Login Route
 app.post("/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
