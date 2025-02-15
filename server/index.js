@@ -1,4 +1,4 @@
- import express from "express";
+import express from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -9,7 +9,7 @@ import connectDB from "./config.js";
 import User from "./User.js";
 import Product from "./Products.js";
 
-
+// Load environment variables
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,40 +21,39 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // Local development URL
-       "https://ecomcrud-dashboard-1.onrender.com", // Production frontend URL
-     ],
+      "https://ecomcrud-dashboard-1.onrender.com", // Production frontend URL
+    ],
     credentials: true,
   })
 );
 
 // Database Connection
-connectDB().catch((err) => {
- const connectDB = async () => {
+const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("MongoDB connected");
   } catch (error) {
-    console.error("MongoDB connection error:", error.message); // More detailed error logging
+    console.error("MongoDB connection error:", error.message);
     process.exit(1); // Exit the process on connection failure
   }
 };
-
+connectDB(); // Call the function to establish the DB connection
 
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized: No token provided" });
-    }
-    try {
-      const decoded = jwt.verify(token, process.env.KEY);
-      req.user = decoded; // Attach user info to the request object
-      next();
-    } catch (error) {
-      console.error("Token verification error:", error);
-      res.status(401).json({ message: "Unauthorized: Invalid token" });
-    }
-  };
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.KEY);
+    req.user = decoded; // Attach user info to the request object
+    next();
+  } catch (error) {
+    console.error("Token verification error:", error);
+    res.status(401).json({ message: "Unauthorized: Invalid token" });
+  }
+};
 
 // Routes
 
@@ -63,7 +62,10 @@ app.post("/auth/signup", async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
-    // Check if passwords match
+    if (!name || !email || !password || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
@@ -81,7 +83,6 @@ app.post("/auth/signup", async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    // Detailed logging
     console.error("Signup error:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -149,148 +150,7 @@ app.get("/user", authMiddleware, async (req, res) => {
   }
 });
 
-// Get Products Route
-app.get("/products", authMiddleware, async (req, res) => {
-  try {
-    const products = await Product.find({ userId: req.user.id });
-    res.json(products);
-  } catch (error) {
-    console.error("Get products error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-// Add Product Route
-app.post("/products", authMiddleware, async (req, res) => {
-  try {
-    const { name, price, category, company } = req.body;
-
-    const product = new Product({
-      name,
-      price,
-      category,
-      company,
-      userId: req.user.id, // Attach the user ID to the product
-    });
-    await product.save();
-
-    res.status(201).json({ message: "Product added successfully" });
-  } catch (error) {
-    console.error("Add product error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-// Get Product by ID Route
-app.get("/products/:id", authMiddleware, async (req, res) => {
-    const { id } = req.params;
-  
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid product ID" });
-    }
-  
-    try {
-      const product = await Product.findOne({ _id: id, userId: req.user.id });
-      if (!product) {
-        return res.status(404).json({ message: "Product not found or not authorized" });
-      }
-  
-      res.status(200).json(product);
-    } catch (error) {
-      console.error("Error fetching product by ID:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  });
-  
-
-
-// Update Product Route
-app.put("/products/:id", authMiddleware, async (req, res) => {
-    const { id } = req.params;
-    const { name, price, category, company } = req.body;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: "Invalid product ID" });
-    }
-
-    try {
-        // Validate input
-        if (!name || !price || !category || !company) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        // Find the product by ID and ensure the user is authorized
-        const product = await Product.findOne({ _id: id, userId: req.user.id });
-        if (!product) {
-            return res.status(404).json({ message: "Product not found or not authorized" });
-        }
-
-        // Update product fields
-        product.name = name;
-        product.price = price;
-        product.category = category;
-        product.company = company;
-
-        // Save updated product to database
-        await product.save();
-        res.status(200).json({ message: "Product updated successfully", updatedProduct: product });
-    } catch (error) {
-        console.error("Update product error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
-
-// Delete Product Route
-app.delete("/products/:id", authMiddleware, async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const product = await Product.findOneAndDelete({ _id: id, userId: req.user.id });
-    if (!product) {
-      return res.status(404).json({ message: "Product not found or not authorized" });
-    }
-
-    res.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting product:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-// Search Products Route
-app.get("/search/:key", authMiddleware, async (req, res) => {
-    const key = req.params.key.trim(); // Ensure no trailing spaces
-    if (!key) {
-      return res.status(400).json({ success: false, message: "Search key is required" });
-    }
-  
-    try {
-      const products = await Product.find({
-        userId: req.user.id, // Ensure user-specific search
-        $or: [
-          { name: { $regex: key, $options: "i" } },
-          { category: { $regex: key, $options: "i" } },
-          { company: { $regex: key, $options: "i" } },
-        ],
-      });
-  
-      // Handle no results found
-      if (!products || products.length === 0) {
-        return res.status(200).json({ success: true, message: "No products found", data: [] });
-      }
-  
-      // Respond with the found products
-      res.status(200).json({ success: true, message: "Products fetched successfully", data: products });
-    } catch (error) {
-      console.error("Search products error:", error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
-    }
-  });
-  
-  
-
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
