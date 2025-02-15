@@ -103,6 +103,7 @@ const AddProduct = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false); // State to track loading status
     const [successMessage, setSuccessMessage] = useState(''); // State for success message
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 //     Initializes state variables for input fields (name, price, category, company).
 // Adds error to track input validation errors.
