@@ -49,15 +49,15 @@ const Navbar = () => {
     };
 
     return (
-        <nav>
-            <div className="navbar">
-                <button onClick={toggleDropdown} className="profile-btn">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="container-fluid">
+                <button className="btn btn-outline-secondary" onClick={toggleDropdown}>
                     {isLoggedIn ? `Hi, ${username}` : "Profile"}
                 </button>
                 {dropdownVisible && isLoggedIn && (
-                    <div className="dropdown">
-                        <p>{username}</p>
-                        <button onClick={logout}>Logout</button>
+                    <div className="dropdown-menu show">
+                        <p className="dropdown-item">{username}</p>
+                        <button className="dropdown-item" onClick={logout}>Logout</button>
                     </div>
                 )}
             </div>
@@ -66,4 +66,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
