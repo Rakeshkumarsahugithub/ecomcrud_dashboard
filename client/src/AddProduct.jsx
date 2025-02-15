@@ -35,7 +35,7 @@ const AddProduct = () => {
  //Sets loading to true to show feedback during the API call.
         try {
             await axios.post(
-                "http://ecomcrud-dashboard.onrender.com/products",
+                "https://ecomcrud-dashboard.onrender.com/products",
                 { name, price, category, company },
                 { withCredentials: true }
             );
