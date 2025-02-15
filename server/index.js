@@ -62,32 +62,25 @@ app.post("/auth/signup", async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
-    if (!name || !email || !password || !confirmPassword) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Signup error:", error.message);
+    console.error("Signup error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 // Login Route
 app.post("/auth/login", async (req, res) => {
   try {
