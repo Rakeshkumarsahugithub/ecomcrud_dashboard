@@ -86,7 +86,7 @@
 //     );
 // };
 
-// export default AddProduct; // Export the component to be used in other parts of the application.
+// export default AddProduct; // Export the component for use in other parts of the application.
 
 
 
