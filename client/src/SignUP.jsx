@@ -38,7 +38,7 @@ const SignUp = () => {
         try {
             // Send a POST request to the signup endpoint with user data.
             const result = await axios.post(
-                "http://localhost:5000/auth/signup", // API endpoint for signup.
+                "https://ecomcrud-dashboard.onrender.com/auth/signup", // API endpoint for signup.
                 { name, email, password, confirmPassword }, // Data to send in the request body.
                 { withCredentials: true } // Include credentials (e.g., cookies) in the request.
             );
