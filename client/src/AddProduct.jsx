@@ -12,9 +12,14 @@ const AddProduct = () => {
 
   // Helper function to get cookies
   const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split("=");
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+    return null;
   };
 
   const addProduct = async () => {
@@ -31,6 +36,8 @@ const AddProduct = () => {
 
     try {
       const token = getCookie("token"); // Get token from cookies
+      console.log("Token retrieved:", token); // Debugging line
+
       if (!token) {
         throw new Error("No authentication token found. Please log in.");
       }
@@ -111,4 +118,3 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
-       
