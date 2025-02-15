@@ -28,16 +28,10 @@ app.use(
 );
 
 // Database Connection
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.error("MongoDB connection error:", error.message);
-    process.exit(1); // Exit the process on connection failure
-  }
-};
-connectDB(); // Call the function to establish the DB connection
+connectDB().catch((err) => {
+  console.error("Database connection failed:", err.message);
+  process.exit(1);
+});
 
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
