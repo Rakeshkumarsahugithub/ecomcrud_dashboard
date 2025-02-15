@@ -92,8 +92,6 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// Imports React and the useState hook for state management.
-// Imports axios to make HTTP requests.
 
 const AddProduct = () => {
     const [name, setName] = useState('');
@@ -101,20 +99,15 @@ const AddProduct = () => {
     const [category, setCategory] = useState('');
     const [company, setCompany] = useState('');
     const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false); // State to track loading status
-    const [successMessage, setSuccessMessage] = useState(''); // State for success message
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-//     Initializes state variables for input fields (name, price, category, company).
-// Adds error to track input validation errors.
-// Adds loading to show a spinner or "Adding..." while the API request is in progress.
-// Adds successMessage to display feedback for the user (success or failure message).
- useEffect(() => {
-        // Check if the user is authenticated
+    useEffect(() => {
         const checkAuth = async () => {
             try {
                 const response = await axios.get("https://ecomcrud-dashboard.onrender.com/auth/check", {
-                    withCredentials: true,  // Ensure cookies are sent with the request
+                    withCredentials: true,  
                 });
                 setIsAuthenticated(response.data.isAuthenticated);
             } catch (error) {
@@ -126,23 +119,22 @@ const AddProduct = () => {
         checkAuth();
     }, []);
 
+    const handleInputChange = (setter) => (e) => {
+        setter(e.target.value);
+        setError(false); // Clear error on input change
+    };
+
     const addProduct = async () => {
         setError(false);
         setSuccessMessage('');
 
-//         Resets error and successMessage at the start of each call to avoid old messages showing.
-
-
-        if (!name || !price || isNaN(price) || !category || !company) {
+        if (!name || !price || isNaN(price) || parseFloat(price) <= 0 || !category || !company) {
             setError(true);
             return;
         }
 
-//         Ensures all fields are filled.
-// Checks if price is numeric using isNaN.
+        setLoading(true);
 
-        setLoading(true); // Show loading indicator
- //Sets loading to true to show feedback during the API call.
         try {
             await axios.post(
                 "https://ecomcrud-dashboard.onrender.com/products",
@@ -150,31 +142,25 @@ const AddProduct = () => {
                 { withCredentials: true }
             );
 
-            setSuccessMessage("Product added successfully!"); // Show success message
+            setSuccessMessage("Product added successfully!");
 
-            // Clear the input fields
-            setName('');
-            setPrice('');
-            setCategory('');
-            setCompany('');
+            // Clear inputs with a slight delay for better UX
+            setTimeout(() => {
+                setName('');
+                setPrice('');
+                setCategory('');
+                setCompany('');
+                setSuccessMessage("Product added successfully!");
+            }, 500); // Slight delay before clearing the fields
+
         } catch (error) {
             console.error("Error adding product:", error);
-            setSuccessMessage("Failed to add product. Please try again."); // Show failure message
+            const errorMessage = error.response?.data?.message || "Failed to add product. Please try again.";
+            setSuccessMessage(errorMessage); 
         } finally {
-            setLoading(false); // Hide loading indicator
+            setLoading(false);
         }
     };
-
-//     Tries to send a POST request to the backend with the input data.
-// On success:
-// Updates successMessage with a positive message.
-// Clears all input fields.
-// On failure:
-// Logs the error to the console.
-// Updates successMessage with an error message.
-// Finally:
-// Resets loading to false.
-
 
     return (
         <div className="addproduct">
@@ -185,28 +171,25 @@ const AddProduct = () => {
                 placeholder="Enter product name"
                 className="inputBx"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleInputChange(setName)}
             />
             {error && !name && <span id="popup">Enter valid name</span>}
-{/* 
-            Input field for the product name, linked to name state.
-If error is true and name is empty, shows a validation message. */}
 
             <input
                 type="number"
                 placeholder="Enter product price"
                 className="inputBx"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={handleInputChange(setPrice)}
             />
-            {error && (!price || isNaN(price)) && <span id="popup">Enter a valid numeric price</span>}
+            {error && (!price || isNaN(price) || parseFloat(price) <= 0) && <span id="popup">Enter a valid numeric price</span>}
 
             <input
                 type="text"
                 placeholder="Enter product category"
                 className="inputBx"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={handleInputChange(setCategory)}
             />
             {error && !category && <span id="popup">Enter valid category</span>}
 
@@ -215,7 +198,7 @@ If error is true and name is empty, shows a validation message. */}
                 placeholder="Enter product company"
                 className="inputBx"
                 value={company}
-                onChange={(e) => setCompany(e.target.value)}
+                onChange={handleInputChange(setCompany)}
             />
             {error && !company && <span id="popup">Enter valid company</span>}
 
@@ -223,11 +206,6 @@ If error is true and name is empty, shows a validation message. */}
                 {loading ? "Adding..." : "Add Product"}
             </button>
 
-            {/* Display success or failure message Button to trigger the addProduct function.
-Disabled when loading is true to prevent multiple submissions.
-Shows "Adding..." when loading is true.
-Displays the success or failure message when successMessage is not empty.
- */}
             {successMessage && <p className="message">{successMessage}</p>}
         </div>
     );
