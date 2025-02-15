@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-// Imports React and the useState hook for state management.
-// Imports axios to make HTTP requests.
 
 const AddProduct = () => {
     const [name, setName] = useState('');
@@ -9,32 +7,19 @@ const AddProduct = () => {
     const [category, setCategory] = useState('');
     const [company, setCompany] = useState('');
     const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false); // State to track loading status
-    const [successMessage, setSuccessMessage] = useState(''); // State for success message
-
-//     Initializes state variables for input fields (name, price, category, company).
-// Adds error to track input validation errors.
-// Adds loading to show a spinner or "Adding..." while the API request is in progress.
-// Adds successMessage to display feedback for the user (success or failure message).
-
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     const addProduct = async () => {
         setError(false);
         setSuccessMessage('');
-
-//         Resets error and successMessage at the start of each call to avoid old messages showing.
-
 
         if (!name || !price || isNaN(price) || !category || !company) {
             setError(true);
             return;
         }
 
-//         Ensures all fields are filled.
-// Checks if price is numeric using isNaN.
-
-        setLoading(true); // Show loading indicator
- //Sets loading to true to show feedback during the API call.
+        setLoading(true);
         try {
             await axios.post(
                 "https://ecomcrud-dashboard.onrender.com/products",
@@ -42,85 +27,71 @@ const AddProduct = () => {
                 { withCredentials: true }
             );
 
-            setSuccessMessage("Product added successfully!"); // Show success message
-
-            // Clear the input fields
+            setSuccessMessage("Product added successfully!");
             setName('');
             setPrice('');
             setCategory('');
             setCompany('');
         } catch (error) {
             console.error("Error adding product:", error);
-            setSuccessMessage("Failed to add product. Please try again."); // Show failure message
+            setSuccessMessage("Failed to add product. Please try again.");
         } finally {
-            setLoading(false); // Hide loading indicator
+            setLoading(false);
         }
     };
 
-//     Tries to send a POST request to the backend with the input data.
-// On success:
-// Updates successMessage with a positive message.
-// Clears all input fields.
-// On failure:
-// Logs the error to the console.
-// Updates successMessage with an error message.
-// Finally:
-// Resets loading to false.
-
-
     return (
-        <div className="addproduct">
-            <h1>Add Product...</h1>
+        <div className="container mt-5">
+            <h1>Add Product</h1>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter product name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                {error && !name && <small className="text-danger">Enter valid name</small>}
+            </div>
 
-            <input
-                type="text"
-                placeholder="Enter product name"
-                className="inputBx"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            {error && !name && <span id="popup">Enter valid name</span>}
-{/* 
-            Input field for the product name, linked to name state.
-If error is true and name is empty, shows a validation message. */}
+            <div className="mb-3">
+                <input
+                    type="number"
+                    className="form-control"
+                    placeholder="Enter product price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                />
+                {error && (!price || isNaN(price)) && <small className="text-danger">Enter a valid numeric price</small>}
+            </div>
 
-            <input
-                type="number"
-                placeholder="Enter product price"
-                className="inputBx"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-            />
-            {error && (!price || isNaN(price)) && <span id="popup">Enter a valid numeric price</span>}
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter product category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                />
+                {error && !category && <small className="text-danger">Enter valid category</small>}
+            </div>
 
-            <input
-                type="text"
-                placeholder="Enter product category"
-                className="inputBx"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-            />
-            {error && !category && <span id="popup">Enter valid category</span>}
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter product company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                />
+                {error && !company && <small className="text-danger">Enter valid company</small>}
+            </div>
 
-            <input
-                type="text"
-                placeholder="Enter product company"
-                className="inputBx"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-            />
-            {error && !company && <span id="popup">Enter valid company</span>}
-
-            <button className="prdbtn" onClick={addProduct} disabled={loading}>
+            <button className="btn btn-primary" onClick={addProduct} disabled={loading}>
                 {loading ? "Adding..." : "Add Product"}
             </button>
 
-            {/* Display success or failure message Button to trigger the addProduct function.
-Disabled when loading is true to prevent multiple submissions.
-Shows "Adding..." when loading is true.
-Displays the success or failure message when successMessage is not empty.
- */}
-            {successMessage && <p className="message">{successMessage}</p>}
+            {successMessage && <div className="mt-3 alert alert-info">{successMessage}</div>}
         </div>
     );
 };
