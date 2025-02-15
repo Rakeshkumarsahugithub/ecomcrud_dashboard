@@ -1,6 +1,6 @@
 
             {/* Conditionally render Footer only if not on the Home page {location.pathname !== "/home" && location.pathname !== "/products" && <Footer />}   {location.pathname !== "/home" && <Footer />}  {!["/home", "/products"].includes(location.pathname) && <Footer />} */}
-
+                            
             import React, { useState, useEffect } from "react";
             import { Routes, Route, Navigate, useLocation } from "react-router-dom";
             import axios from "axios";
@@ -11,7 +11,7 @@
             import SignUp from "./SignUP";
             import Login from "./Login";
             import AddProduct from "./AddProduct";
-            import ProductList from "./Productlist";
+            import ProductList from "./Productlist"
             import UpdateProduct from "./UpdateProduct";
             import Nav from "./Nav";
             import Home from "./Home";
