@@ -136,9 +136,15 @@ const AddProduct = () => {
         setLoading(true);
 
         try {
+                    // Assuming the token is stored in localStorage
+        const token = localStorage.getItem("token");
             await axios.post(
                 "https://ecomcrud-dashboard.onrender.com/products",
                 { name, price, category, company },
+                        {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Add token to headers
+                },
                 { withCredentials: true }
             );
 
