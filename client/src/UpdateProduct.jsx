@@ -30,7 +30,7 @@ const UpdateProduct = () => {
                 navigate("/products");
             }
         } catch (error) {
-            console.error("Error fetching product details:", error.response || error.message);
+            console.error("Error fetching product details:", error);
             alert("Error fetching product details. Please try again.");
             navigate("/products");
         } finally {
@@ -56,9 +56,8 @@ const UpdateProduct = () => {
             alert(response.data?.message || "Product updated successfully!");
             navigate("/products");
         } catch (error) {
-            console.error("Error updating product:", error.response || error.message);
-            const errorMessage = error.response?.data?.message || "Error updating product. Please try again.";
-            alert(errorMessage);
+            console.error("Error updating product:", error);
+            alert("Error updating product. Please try again.");
         } finally {
             setLoading(false);
         }
