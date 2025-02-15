@@ -73,7 +73,7 @@ const UpdateProduct = () => {
             <div className="form-group mb-3">
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control border-warning"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Product Name"
@@ -82,7 +82,7 @@ const UpdateProduct = () => {
             <div className="form-group mb-3">
                 <input
                     type="number"
-                    className="form-control"
+                    className="form-control border-warning"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     placeholder="Product Price"
@@ -91,7 +91,7 @@ const UpdateProduct = () => {
             <div className="form-group mb-3">
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control border-warning"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     placeholder="Product Category"
@@ -100,13 +100,13 @@ const UpdateProduct = () => {
             <div className="form-group mb-4">
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control border-warning"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Product Company"
                 />
             </div>
-            <button className="btn btn-primary btn-block" onClick={updateProduct}>
+            <button className="btn btn-warning btn-block" onClick={updateProduct}>
                 Update Product
             </button>
         </div>
