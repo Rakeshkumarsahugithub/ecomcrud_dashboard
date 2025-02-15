@@ -4,7 +4,9 @@
             import React, { useState, useEffect } from "react";
             import { Routes, Route, Navigate, useLocation } from "react-router-dom";
             import axios from "axios";
-            
+
+            import 'bootstrap/dist/css/bootstrap.min.css';
+
             import "./App.css";
             import Footer from "./Footer";
             import ThemeMode from "../ThemeMode";
