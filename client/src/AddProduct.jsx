@@ -108,7 +108,22 @@ const AddProduct = () => {
 // Adds error to track input validation errors.
 // Adds loading to show a spinner or "Adding..." while the API request is in progress.
 // Adds successMessage to display feedback for the user (success or failure message).
+ useEffect(() => {
+        // Check if the user is authenticated
+        const checkAuth = async () => {
+            try {
+                const response = await axios.get("https://ecomcrud-dashboard.onrender.com/auth/check", {
+                    withCredentials: true,  // Ensure cookies are sent with the request
+                });
+                setIsAuthenticated(response.data.isAuthenticated);
+            } catch (error) {
+                console.log("Authentication check failed:", error);
+                setIsAuthenticated(false);
+            }
+        };
 
+        checkAuth();
+    }, []);
 
     const addProduct = async () => {
         setError(false);
