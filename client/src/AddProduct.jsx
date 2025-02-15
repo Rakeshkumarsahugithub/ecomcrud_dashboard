@@ -32,14 +32,14 @@ const AddProduct = () => {
     try {
       const token = getCookie("token"); // Get token from cookies
       if (!token) {
-        throw new Error("No authentication token found");
+        throw new Error("No authentication token found. Please log in.");
       }
 
-      await axios.post(
+      const response = await axios.post(
         "https://ecomcrud-dashboard.onrender.com/products",
         { name, price, category, company },
         {
-          withCredentials: true,
+          withCredentials: true, // Send cookies
           headers: {
             Authorization: `Bearer ${token}`, // Send token in headers
           },
@@ -53,7 +53,7 @@ const AddProduct = () => {
       setCompany("");
     } catch (error) {
       console.error("Error adding product:", error);
-      setSuccessMessage("Failed to add product. Please try again.");
+      setSuccessMessage(error.message || "Failed to add product. Please try again.");
     } finally {
       setLoading(false);
     }
