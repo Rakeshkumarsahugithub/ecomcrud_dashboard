@@ -141,7 +141,7 @@ const AddProduct = () => {
             await axios.post(
                 "https://ecomcrud-dashboard.onrender.com/products",
                 { name, price, category, company },
-                        {
+                        
                 headers: {
                     Authorization: `Bearer ${token}`, // Add token to headers
                 },
