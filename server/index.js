@@ -49,33 +49,38 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-// Routes
-
-// Signup Route
+//Sign Up Routes
 app.post("/auth/signup", async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
+    // Validate passwords
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
+    // Check if email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
+    // Respond with success
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Signup error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Signup error:", error); // Log error
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 });
-// Login Route
+
+//Login Route
 app.post("/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
