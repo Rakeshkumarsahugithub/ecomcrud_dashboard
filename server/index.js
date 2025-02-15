@@ -1,5 +1,3 @@
-
-
 import express from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
@@ -77,6 +75,8 @@ app.post("/auth/signup", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// Login Route
 app.post("/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -283,3 +283,8 @@ app.get("/search/:key", authMiddleware, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+
+ 
+  
