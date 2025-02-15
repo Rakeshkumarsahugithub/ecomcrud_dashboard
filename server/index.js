@@ -11,7 +11,6 @@ import connectDB from "./config.js";
 import User from "./User.js";
 import Product from "./Products.js";
 
-
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,7 +24,8 @@ app.use(
       "http://localhost:5173", // Local development URL
       "https://ecomcrud-dashboard-1.onrender.com", // Production frontend URL
     ],
-    credentials: true,
+    credentials: true, // Allow credentials (cookies)
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   })
 );
 
@@ -37,19 +37,19 @@ connectDB().catch((err) => {
 
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized: No token provided" });
-    }
-    try {
-      const decoded = jwt.verify(token, process.env.KEY);
-      req.user = decoded; // Attach user info to the request object
-      next();
-    } catch (error) {
-      console.error("Token verification error:", error);
-      res.status(401).json({ message: "Unauthorized: Invalid token" });
-    }
-  };
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1]; // Check both cookies and headers
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.KEY);
+    req.user = decoded; // Attach user info to the request object
+    next();
+  } catch (error) {
+    console.error("Token verification error:", error);
+    res.status(401).json({ message: "Unauthorized: Invalid token" });
+  }
+};
 
 // Routes
 
@@ -97,7 +97,8 @@ app.post("/auth/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+      sameSite: "None", // Required for cross-site cookies
       maxAge: 7200000, // 2 hours
     });
     res.json({ message: "Login successful" });
@@ -109,7 +110,11 @@ app.post("/auth/login", async (req, res) => {
 
 // Logout Route
 app.post("/auth/logout", (req, res) => {
-  res.clearCookie("token", { httpOnly: true, secure: process.env.NODE_ENV === "production" });
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+  });
   res.json({ message: "Logged out successfully" });
 });
 
@@ -174,61 +179,59 @@ app.post("/products", authMiddleware, async (req, res) => {
 
 // Get Product by ID Route
 app.get("/products/:id", authMiddleware, async (req, res) => {
-    const { id } = req.params;
-  
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid product ID" });
-    }
-  
-    try {
-      const product = await Product.findOne({ _id: id, userId: req.user.id });
-      if (!product) {
-        return res.status(404).json({ message: "Product not found or not authorized" });
-      }
-  
-      res.status(200).json(product);
-    } catch (error) {
-      console.error("Error fetching product by ID:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  });
-  
+  const { id } = req.params;
 
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid product ID" });
+  }
+
+  try {
+    const product = await Product.findOne({ _id: id, userId: req.user.id });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found or not authorized" });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Error fetching product by ID:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 // Update Product Route
 app.put("/products/:id", authMiddleware, async (req, res) => {
-    const { id } = req.params;
-    const { name, price, category, company } = req.body;
+  const { id } = req.params;
+  const { name, price, category, company } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: "Invalid product ID" });
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid product ID" });
+  }
+
+  try {
+    // Validate input
+    if (!name || !price || !category || !company) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    try {
-        // Validate input
-        if (!name || !price || !category || !company) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        // Find the product by ID and ensure the user is authorized
-        const product = await Product.findOne({ _id: id, userId: req.user.id });
-        if (!product) {
-            return res.status(404).json({ message: "Product not found or not authorized" });
-        }
-
-        // Update product fields
-        product.name = name;
-        product.price = price;
-        product.category = category;
-        product.company = company;
-
-        // Save updated product to database
-        await product.save();
-        res.status(200).json({ message: "Product updated successfully", updatedProduct: product });
-    } catch (error) {
-        console.error("Update product error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+    // Find the product by ID and ensure the user is authorized
+    const product = await Product.findOne({ _id: id, userId: req.user.id });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found or not authorized" });
     }
+
+    // Update product fields
+    product.name = name;
+    product.price = price;
+    product.category = category;
+    product.company = company;
+
+    // Save updated product to database
+    await product.save();
+    res.status(200).json({ message: "Product updated successfully", updatedProduct: product });
+  } catch (error) {
+    console.error("Update product error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 // Delete Product Route
@@ -250,38 +253,35 @@ app.delete("/products/:id", authMiddleware, async (req, res) => {
 
 // Search Products Route
 app.get("/search/:key", authMiddleware, async (req, res) => {
-    const key = req.params.key.trim(); // Ensure no trailing spaces
-    if (!key) {
-      return res.status(400).json({ success: false, message: "Search key is required" });
+  const key = req.params.key.trim(); // Ensure no trailing spaces
+  if (!key) {
+    return res.status(400).json({ success: false, message: "Search key is required" });
+  }
+
+  try {
+    const products = await Product.find({
+      userId: req.user.id, // Ensure user-specific search
+      $or: [
+        { name: { $regex: key, $options: "i" } },
+        { category: { $regex: key, $options: "i" } },
+        { company: { $regex: key, $options: "i" } },
+      ],
+    });
+
+    // Handle no results found
+    if (!products || products.length === 0) {
+      return res.status(200).json({ success: true, message: "No products found", data: [] });
     }
-  
-    try {
-      const products = await Product.find({
-        userId: req.user.id, // Ensure user-specific search
-        $or: [
-          { name: { $regex: key, $options: "i" } },
-          { category: { $regex: key, $options: "i" } },
-          { company: { $regex: key, $options: "i" } },
-        ],
-      });
-  
-      // Handle no results found
-      if (!products || products.length === 0) {
-        return res.status(200).json({ success: true, message: "No products found", data: [] });
-      }
-  
-      // Respond with the found products
-      res.status(200).json({ success: true, message: "Products fetched successfully", data: products });
-    } catch (error) {
-      console.error("Search products error:", error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
-    }
-  });
-  
-  
+
+    // Respond with the found products
+    res.status(200).json({ success: true, message: "Products fetched successfully", data: products });
+  } catch (error) {
+    console.error("Search products error:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
 
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
