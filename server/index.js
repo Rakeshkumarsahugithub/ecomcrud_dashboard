@@ -29,9 +29,16 @@ app.use(
 
 // Database Connection
 connectDB().catch((err) => {
-  console.error("Database connection failed:", err.message);
-  process.exit(1);
-});
+ const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection error:", error.message); // More detailed error logging
+    process.exit(1); // Exit the process on connection failure
+  }
+};
+
 
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
