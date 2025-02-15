@@ -75,8 +75,6 @@ app.post("/auth/signup", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-// Login Route
 app.post("/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,12 +91,14 @@ app.post("/auth/login", async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.KEY, { expiresIn: "2h" });
 
+    // Set cookie with secure attributes
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+      secure: true, // Always use HTTPS in production
       sameSite: "None", // Required for cross-site cookies
       maxAge: 7200000, // 2 hours
     });
+
     res.json({ message: "Login successful" });
   } catch (error) {
     console.error("Login error:", error);
