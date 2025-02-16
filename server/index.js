@@ -142,6 +142,17 @@ app.get("/user", authMiddleware, async (req, res) => {
   }
 });
 
+// Get User Info Route
+app.get("/user", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    res.json({ name: user.name });
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 // Get Products Route
 app.get("/products", authMiddleware, async (req, res) => {
   try {
@@ -279,7 +290,8 @@ app.get("/search/:key", authMiddleware, async (req, res) => {
       res.status(500).json({ success: false, message: "Internal Server Error" });
     }
   });
-
+  
+  
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
