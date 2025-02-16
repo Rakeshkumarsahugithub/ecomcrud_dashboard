@@ -52,7 +52,7 @@ const authMiddleware = (req, res, next) => {
 //Sign Up Routes
 app.post("/auth/signup", async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { username, email, password, confirmPassword } = req.body;
 
     // Validate passwords
     if (password !== confirmPassword) {
@@ -69,7 +69,7 @@ app.post("/auth/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
 
     // Respond with success
