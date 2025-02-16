@@ -5,57 +5,25 @@ import axios from "axios";
 const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [searchKey, setSearchKey] = useState("");
-    
+
     useEffect(() => {
         fetchProducts();
     }, []);
 
     const fetchProducts = async () => {
         try {
-            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-            
-            if (!token) {
-                throw new Error("No token found. Please log in.");
-            }
-
-            const tokenValue = token.split('=')[1];
-
-            const result = await axios.get(
-                "https://ecomcrud-dashboard.onrender.com/products",
-                {
-                    headers: {
-                        'Authorization': `Bearer ${tokenValue}`
-                    },
-                    withCredentials: true
-                }
-            );
+            const result = await axios.get("https://ecomcrud-dashboard.onrender.com/products");
             setProducts(result.data);
         } catch (error) {
             console.error("Error fetching products:", error);
-            setProducts([]);  // If there's an error, clear the product list.
+            setProducts([]); // If there's an error, clear the product list.
         }
     };
 
     const deleteProduct = async (id) => {
         try {
-            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-            
-            if (!token) {
-                throw new Error("No token found. Please log in.");
-            }
-
-            const tokenValue = token.split('=')[1];
-
-            await axios.delete(
-                `https://ecomcrud-dashboard.onrender.com/products/${id}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${tokenValue}`
-                    },
-                    withCredentials: true
-                }
-            );
-            fetchProducts();  // Refresh the product list after deletion.
+            await axios.delete(`https://ecomcrud-dashboard.onrender.com/products/${id}`);
+            fetchProducts(); // Refresh the product list after deletion.
         } catch (error) {
             console.error("Error deleting product:", error);
         }
@@ -64,11 +32,11 @@ const ProductList = () => {
     const searchHandle = async () => {
         if (searchKey) {
             try {
-                const result = await axios.get(`https://ecomcrud-dashboard.onrender.com/search/${searchKey}`, { withCredentials: true });
-                setProducts(result.data.data);  // Assuming the response has 'data' as the list of products.
+                const result = await axios.get(`https://ecomcrud-dashboard.onrender.com/search/${searchKey}`);
+                setProducts(result.data.data); // Assuming the response has 'data' as the list of products.
             } catch (error) {
                 console.error("Error searching products:", error);
-                setProducts([]);  // Handle error by clearing the product list.
+                setProducts([]); // Handle error by clearing the product list.
             }
         } else {
             fetchProducts(); // Load all products if search key is empty.
