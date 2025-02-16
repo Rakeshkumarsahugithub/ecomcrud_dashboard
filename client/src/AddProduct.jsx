@@ -22,7 +22,7 @@ const AddProduct = () => {
         setLoading(true);
         try {
             await axios.post(
-                "http://localhost:5005/products",
+                "https://ecomcrud-dashboard.onrender.com/products",
                 { name, price, category, company },
                 { withCredentials: true }
             );
