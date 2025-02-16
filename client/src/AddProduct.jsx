@@ -11,34 +11,41 @@ const AddProduct = () => {
     const [successMessage, setSuccessMessage] = useState('');
 
     const addProduct = async () => {
-        setError(false);
-        setSuccessMessage('');
+    setError(false);
+    setSuccessMessage('');
 
-        if (!name || !price || isNaN(price) || !category || !company) {
-            setError(true);
-            return;
-        }
+    if (!name || !price || isNaN(price) || !category || !company) {
+        setError(true);
+        return;
+    }
 
-        setLoading(true);
-        try {
-            await axios.post(
-                "https://ecomcrud-dashboard.onrender.com/products",
-                { name, price, category, company },
-                { withCredentials: true }
-            );
+    setLoading(true);
+    try {
+        const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+        
+        await axios.post(
+            "https://ecomcrud-dashboard.onrender.com/products",
+            { name, price, category, company },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                withCredentials: true
+            }
+        );
 
-            setSuccessMessage("Product added successfully!");
-            setName('');
-            setPrice('');
-            setCategory('');
-            setCompany('');
-        } catch (error) {
-            console.error("Error adding product:", error);
-            setSuccessMessage("Failed to add product. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+        setSuccessMessage("Product added successfully!");
+        setName('');
+        setPrice('');
+        setCategory('');
+        setCompany('');
+    } catch (error) {
+        console.error("Error adding product:", error);
+        setSuccessMessage("Failed to add product. Please try again.");
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div className="container mt-5">
