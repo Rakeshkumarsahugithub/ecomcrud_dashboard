@@ -10,23 +10,51 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    const fetchProducts = async () => {
-        try {
-            const result = await axios.get("https://ecomcrud-dashboard.onrender.com/products", { withCredentials: true });
-            setProducts(result.data);
-        } catch (error) {
-            console.error("Error fetching products:", error);
-        }
-    };
+   const fetchProducts = async () => {
+    try {
+        const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
 
-    const deleteProduct = async (id) => {
-        try {
-            await axios.delete(`https://ecomcrud-dashboard.onrender.com/products/${id}`, { withCredentials: true });
-            fetchProducts();
-        } catch (error) {
-            console.error("Error deleting product:", error);
+        if (!token) {
+            throw new Error("No token found. Please log in.");
         }
-    };
+
+        const result = await axios.get(
+            "https://ecomcrud-dashboard.onrender.com/products",
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                withCredentials: true
+            }
+        );
+        setProducts(result.data);
+    } catch (error) {
+        console.error("Error fetching products:", error);
+    }
+};
+
+const deleteProduct = async (id) => {
+    try {
+        const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+
+        if (!token) {
+            throw new Error("No token found. Please log in.");
+        }
+
+        await axios.delete(
+            `https://ecomcrud-dashboard.onrender.com/products/${id}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                withCredentials: true
+            }
+        );
+        fetchProducts();
+    } catch (error) {
+        console.error("Error deleting product:", error);
+    }
+};
 
     const searchHandle = async () => {
         if (searchKey) {
