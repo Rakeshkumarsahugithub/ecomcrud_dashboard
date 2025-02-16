@@ -29,7 +29,7 @@ const SignUp = () => {
     try {
       const result = await axios.post(
         "https://ecomcrud-dashboard.onrender.com/auth/signup",
-        { name, email, password, confirmPassword },
+        { username, email, password, confirmPassword },
         { withCredentials: true }
       );
       
