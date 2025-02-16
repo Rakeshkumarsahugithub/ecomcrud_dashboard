@@ -10,49 +10,34 @@ const AddProduct = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
-   const addProduct = async () => {
-    setError(false);
-    setSuccessMessage('');
+    const addProduct = async () => {
+        setError(false);
+        setSuccessMessage('');
 
-    if (!name || !price || isNaN(price) || !category || !company) {
-        setError(true);
-        return;
-    }
-
-    setLoading(true);
-    try {
-        // Check if token cookie exists
-        const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('token='));
-        if (!tokenCookie) {
-            throw new Error('Token not found. Please log in.');
+        if (!name || !price || isNaN(price) || !category || !company) {
+            setError(true);
+            return;
         }
-        
-        const token = tokenCookie.split('=')[1]; // Extract token
 
-        await axios.post(
-            "https://ecomcrud-dashboard.onrender.com/products",
-            { name, price, category, company },
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                withCredentials: true
-            }
-        );
+        setLoading(true);
+        try {
+            await axios.post(
+                "https://ecomcrud-dashboard.onrender.com/products", 
+                { name, price, category, company }
+            );
 
-        setSuccessMessage("Product added successfully!");
-        setName('');
-        setPrice('');
-        setCategory('');
-        setCompany('');
-    } catch (error) {
-        console.error("Error adding product:", error);
-        setSuccessMessage("Failed to add product. Please try again.");
-    } finally {
-        setLoading(false);
-    }
-};
-
+            setSuccessMessage("Product added successfully!");
+            setName('');
+            setPrice('');
+            setCategory('');
+            setCompany('');
+        } catch (error) {
+            console.error("Error adding product:", error);
+            setSuccessMessage("Failed to add product. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="container mt-5">
