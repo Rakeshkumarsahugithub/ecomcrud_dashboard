@@ -78,7 +78,8 @@ const ProductList = () => {
                                 <td>{product.category}</td>
                                 <td>{product.company}</td>
                                 <td>
-                                    <button className="btn btn-danger me-2" onClick={() => deleteProduct(product._id)}>Delete</button>
+                          <button className="btn me-2" onClick={() => deleteProduct(product._id)} style={{ backgroundColor: 'red', color: 'white' }}>Delete</button>
+
                                     <Link to={`/Update/${product._id}`} className="btn btn-warning">Update</Link>
                                 </td>
                             </tr>
