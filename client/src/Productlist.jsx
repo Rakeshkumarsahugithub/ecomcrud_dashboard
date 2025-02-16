@@ -10,38 +10,43 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    const fetchProducts = async () => {
-        try {
-            const result = await axios.get("https://ecomcrud-dashboard.onrender.com/products");
-            setProducts(result.data);
-        } catch (error) {
-            console.error("Error fetching products:", error);
-            setProducts([]); // If there's an error, clear the product list.
-        }
-    };
+   const fetchProducts = async () => {
+    try {
+        const result = await axios.get("https://ecomcrud-dashboard.onrender.com/products", {
+            withCredentials: true, // Include credentials
+        });
+        setProducts(result.data);
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        setProducts([]);
+    }
+};
 
-    const deleteProduct = async (id) => {
-        try {
-            await axios.delete(`https://ecomcrud-dashboard.onrender.com/products/${id}`);
-            fetchProducts(); // Refresh the product list after deletion.
-        } catch (error) {
-            console.error("Error deleting product:", error);
-        }
-    };
+const deleteProduct = async (id) => {
+    try {
+        await axios.delete(`https://ecomcrud-dashboard.onrender.com/products/${id}`, {
+            withCredentials: true, // Include credentials
+        });
+        fetchProducts(); // Refresh the product list after deletion
+    } catch (error) {
+        console.error("Error deleting product:", error);
+    }
+};
 
-    const searchHandle = async () => {
-        if (searchKey) {
-            try {
-                const result = await axios.get(`https://ecomcrud-dashboard.onrender.com/search/${searchKey}`);
-                setProducts(result.data.data); // Assuming the response has 'data' as the list of products.
-            } catch (error) {
-                console.error("Error searching products:", error);
-                setProducts([]); // Handle error by clearing the product list.
-            }
-        } else {
-            fetchProducts(); // Load all products if search key is empty.
-        }
-    };
+
+const searchHandle = async () => {
+  if (searchKey) {
+    try {
+      const result = await axios.get(
+        `https://ecomcrud-dashboard.onrender.com/search/${searchKey}`,
+        { withCredentials: true } 
+      );
+      setProducts(result.data.data);
+    } catch (error) {
+      console.error("Error searching products:", error);
+    }
+  }
+};
 
     return (
         <div className="container mt-5">
