@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const SignUp = () => {
-  const [name, setName] = useState("");
+  const [username, setuserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,7 +34,7 @@ const SignUp = () => {
       );
       
       alert(result.data.message);
-      setName("");
+      setuserName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
@@ -58,7 +58,7 @@ const SignUp = () => {
               className="form-control"
               placeholder="Enter Name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setsetuserName(e.target.value)}
             />
           </div>
 
