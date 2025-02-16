@@ -135,7 +135,7 @@ app.get("/auth/check", (req, res) => {
 app.get("/user", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    res.json({ name: user.name });
+    res.json({ username: user.username });
   } catch (error) {
     console.error("Error fetching user info:", error);
     res.status(500).json({ message: "Internal Server Error" });
