@@ -10,7 +10,7 @@ const AddProduct = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
-    const addProduct = async () => {
+   const addProduct = async () => {
     setError(false);
     setSuccessMessage('');
 
@@ -21,8 +21,14 @@ const AddProduct = () => {
 
     setLoading(true);
     try {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+        // Check if token cookie exists
+        const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('token='));
+        if (!tokenCookie) {
+            throw new Error('Token not found. Please log in.');
+        }
         
+        const token = tokenCookie.split('=')[1]; // Extract token
+
         await axios.post(
             "https://ecomcrud-dashboard.onrender.com/products",
             { name, price, category, company },
@@ -46,6 +52,7 @@ const AddProduct = () => {
         setLoading(false);
     }
 };
+
 
     return (
         <div className="container mt-5">
