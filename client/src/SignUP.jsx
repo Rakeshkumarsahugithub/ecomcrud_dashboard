@@ -57,7 +57,7 @@ const SignUp = () => {
               type="text"
               className="form-control"
               placeholder="Enter Name"
-              value={name}
+              value={username}
               onChange={(e) => setuserName(e.target.value)}
             />
           </div>
