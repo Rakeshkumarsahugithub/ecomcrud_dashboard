@@ -9,12 +9,12 @@
 }
 
 .navul li {
-  display: inline-block; /* Ensures they display inline and wrap appropriately */
+  display: inline;
   padding: 15px;
 }
 
 .navul li a {
-  margin-right: 20px; /* Reduced margin to prevent spacing issues */
+  margin-right: 150px;
   color: rgb(118, 16, 16);
   font-size: larger;
   font-weight: 600;
@@ -283,53 +283,5 @@ li {
   .right {
     text-align: center;
   }
-
-  /* Adjust table for smaller screens */
-  .table {
-    font-size: 14px; /* Smaller font size for mobile */
-  }
-
-  .d-flex {
-    flex-direction: column; /* Stack search input and button vertically on mobile */
-  }
-
-  .d-flex input {
-    width: 100%; /* Ensure the input takes full width on mobile */
-  }
-
-  .d-flex button {
-    width: 100%; /* Ensure the button takes full width on mobile */
-    margin-top: 10px;
-  }
-
-  /* Make Product Table Text More Compact */
-  .table th, .table td {
-    padding: 10px;
-  }
-
-  /* Adjust Product Operations Button for Mobile */
-  .btn {
-    padding: 8px 12px;
-    font-size: 12px; /* Adjust button size */
-  }
-
-  /* Margin Adjustments for the Buttons */
-  .me-2 {
-    margin-right: 10px; /* Decrease margin on mobile */
-  }
 }
 
-/* Desktop Styles */
-@media (min-width: 769px) {
-  .container {
-    max-width: 1200px; /* Ensure the content doesn't stretch too wide on large screens */
-  }
-
-  .table th, .table td {
-    padding: 15px;
-  }
-
-  .d-flex button {
-    width: auto; /* Ensure button isn't full-width on desktop */
-  }
-}
