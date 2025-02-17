@@ -7,7 +7,8 @@ const Login = ({ setAuth }) => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();  // Prevent default form submission behavior
         try {
             const result = await axios.post(
                 'https://ecomcrud-dashboard.onrender.com/auth/login',
@@ -39,29 +40,37 @@ const Login = ({ setAuth }) => {
                 <div className="col-12 col-md-6">
                     <h1 className="text-center">Login</h1>
 
-                    <div className="mb-3">
-                        <label htmlFor="email" className="form-label">Enter Your Email:</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            placeholder="Enter Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
+                    <form onSubmit={handleLogin}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Enter Your Email:</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                className="form-control"
+                                placeholder="Enter Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="password" className="form-label">Enter Your Password:</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Enter Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">Enter Your Password:</label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                className="form-control"
+                                placeholder="Enter Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <button className="btn btn-primary w-100" onClick={handleLogin}>LOGIN</button>
+                        <button type="submit" className="btn btn-primary w-100">LOGIN</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -69,13 +78,3 @@ const Login = ({ setAuth }) => {
 };
 
 export default Login;
-
-
-
-          
-
-
-
- 
-
-    
