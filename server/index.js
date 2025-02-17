@@ -384,15 +384,19 @@ app.get("/auth/check", (req, res) => {
   res.json({ isAuthenticated: true }); // Always returning true for simplicity
 });
 
-// Get User Info Route
-app.get("/user", async (req, res) => {
+// Get User Info Route (server.js)
+app.get('/user', async (req, res) => {
   try {
-    // Since we're not checking token, we'll just simulate user fetching
-    const user = await User.findOne();
-    res.json({ username: user.username });
+    // Fetch user ID from session or token
+    const userId = req.session.userId; // Example using session
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({ userId: user._id, username: user.username });
   } catch (error) {
-    console.error("Error fetching user info:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -422,6 +426,7 @@ app.post("/products", async (req, res) => {
       price,
       category,
       company,
+      userId: req.user.id,
     });
     await product.save();
 
