@@ -102,7 +102,7 @@ app.post("/auth/login", async (req, res) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 7200000, // 2 hours
       sameSite: "None", // Cross-origin cookie
-      
+      domain: "ecomcrud-dashboard-1.onrender.com",    
     });
     res.json({ message: "Login successful" });
   } catch (error) {
