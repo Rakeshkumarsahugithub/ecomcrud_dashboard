@@ -309,7 +309,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "https://ecomcrud-dashboard-1.onrender.com", // Production frontend URL
+      "https://rakeshcrud-operation.onrender.com", // Production frontend URL
     ],
     credentials: true,
   })
