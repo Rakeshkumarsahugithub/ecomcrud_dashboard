@@ -422,7 +422,6 @@ app.post("/products", async (req, res) => {
       price,
       category,
       company,
-      userId: req.body.userId, // Attach user ID from the request body (if available)
     });
     await product.save();
 
