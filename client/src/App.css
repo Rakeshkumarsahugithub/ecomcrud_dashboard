@@ -9,12 +9,12 @@
 }
 
 .navul li {
-  display: inline;
+  display: inline-block; /* Ensures they display inline and wrap appropriately */
   padding: 15px;
 }
 
 .navul li a {
-  margin-right: 150px;
+  margin-right: 20px; /* Reduced margin to prevent spacing issues */
   color: rgb(118, 16, 16);
   font-size: larger;
   font-weight: 600;
@@ -283,25 +283,7 @@ li {
   .right {
     text-align: center;
   }
-}
-/* Global Styles */
-.container {
-  margin: 0 auto;
-  padding: 20px;
-}
 
-/* Mobile First Styling for Table */
-table {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.table th, .table td {
-  text-align: center;
-  vertical-align: middle;
-}
-
-@media (max-width: 768px) {
   /* Adjust table for smaller screens */
   .table {
     font-size: 14px; /* Smaller font size for mobile */
@@ -330,7 +312,7 @@ table {
     padding: 8px 12px;
     font-size: 12px; /* Adjust button size */
   }
-  
+
   /* Margin Adjustments for the Buttons */
   .me-2 {
     margin-right: 10px; /* Decrease margin on mobile */
@@ -351,5 +333,3 @@ table {
     width: auto; /* Ensure button isn't full-width on desktop */
   }
 }
-
-
