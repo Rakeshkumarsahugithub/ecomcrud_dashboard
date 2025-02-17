@@ -99,7 +99,7 @@ app.post("/auth/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 7200000, // 2 hours
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 2 hours
       sameSite: "Strict", // Cross-origin cookie
       domain: "ecomcrud-dashboard.onrender.com",    
     });
