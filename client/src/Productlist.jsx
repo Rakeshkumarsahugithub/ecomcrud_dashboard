@@ -84,13 +84,14 @@ const ProductList = () => {
                 <td>{product.category}</td>
                 <td>{product.company}</td>
                 <td>
-                  <button
-                    className="btn me-2"
-                    onClick={() => deleteProduct(product._id)}
-                    style={{ backgroundColor: "red", color: "white" }}
-                  >
-                    Delete
-                  </button>
+                   <button
+                         className="btn me-2"
+                         onClick={() => deleteProduct(product._id)}
+                         style={{ backgroundColor: 'red', color: 'white' }}
+                         onMouseEnter={(e) => e.target.style.backgroundColor = 'maroon'} // Change to maroon on hover
+                         onMouseLeave={(e) => e.target.style.backgroundColor = 'red'} // Revert back to red when hover ends
+                          > Delete
+                                    </button>
                   <Link to={`/Update/${product._id}`} className="btn btn-warning">
                     Update
                   </Link>
